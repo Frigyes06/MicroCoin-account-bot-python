@@ -61,24 +61,33 @@ def wallet_has_nodes():
         return False
 
 def changekey(new_enc_pubkey, account):
-    msg={"jsonrpc":"2.0","method":"changekey","params":{"account":account,"new_enc_pubkey":new_enc_pubkey,"fee":0,"payload":"","payload_method":"none"},"id":123}
     try:
-        response_raw = requests.post(wallet_jsonrpc_ip_port, json=msg)
-    except:
-        raise WalletCommError
+        msg={"jsonrpc":"2.0","method":"changekey","params":{"account":account,"new_enc_pubkey":new_enc_pubkey,"fee":0,"payload":"","payload_method":"none"},"id":123}
+        print(msg)
+        try:
+            response_raw = requests.post(wallet_jsonrpc_ip_port, json=msg)
+        except:
+            raise WalletCommError
 
-    response = json.loads(response_raw.text)
-    if response["error"]:
-        print(response)
+        response = json.loads(response_raw.text)
+        if response["error"]:
+            print(response)
+            return False
+        else:
+            return True
+    except Exception as e:
+        print(f"Exception occured:", e)
         return False
-    else:
-        return True
 
 def getwalletaccounts():
-    msg = {"jsonrpc":"2.0","method":"getwalletaccounts","id":123}
     try:
-        response_raw = requests.post(wallet_jsonrpc_ip_port, json=msg)
-    except:
-        raise WalletCommError
-    response = json.loads(response_raw.text)
-    return response["result"]
+        msg = {"jsonrpc":"2.0","method":"getwalletaccounts","id":123}
+        try:
+            response_raw = requests.post(wallet_jsonrpc_ip_port, json=msg)
+        except:
+            raise WalletCommError
+        response = json.loads(response_raw.text)
+        return response["result"]
+    except Exception as e:
+        print(f"Exception occured:", e)
+        return False
