@@ -1,0 +1,6 @@
+{
+	"private_key" : "",
+	"wallet_jsonrpc_ip"	: "http://localhost",
+	"wallet_jsonrpc_port"	: 4003,
+	"discord_bot_token" : ""
+}
