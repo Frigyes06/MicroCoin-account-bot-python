@@ -12,12 +12,12 @@ The above copyright notice and this permission notice shall be included in all
 copies or substantial portions of the Software.
 '''
 
-import discord
+from discord import Client
 from base58 import b58decode
 from wallet_json_rpc import changekey, wallet_has_nodes, getwalletaccounts
 from params import discord_bot_token
 
-client = discord.Client()
+client = Client()
 
 @client.event
 async def on_ready():
@@ -65,13 +65,15 @@ async def on_message(message):
 
             print(accounts)
             for f in range(len(accounts)):
-                if accounts[f].balance == 0:
-                    acctochange = accounts[f]
+                if accounts[f]['balance'] == 0:
+                    acctochange = accounts[f]['account']
                     break
 
             if acctochange == "":
                 await message.channel.send("Sajnos most nincs szabad számlám, kérlek próbálkozz újra később.")
                 return
+
+            print(acctochange)
 
             succes = changekey(decoded[2:len(decoded)-8], acctochange)
             if succes:
